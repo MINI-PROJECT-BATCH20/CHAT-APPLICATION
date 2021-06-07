@@ -17,7 +17,11 @@ def index(request):
         stu = SignupForm(request.POST)  
         if stu.is_valid():
             stu.save()
-            messages.success(request,'Account created.. Please login')
+            stu = SignupForm()
+            
         else:
             messages.warning(request,'Something went wrong.')
+            stu = SignupForm()
     return render(request,"index.html",{'form':stu})  
+def demo(request):
+	render(request,"demo.html")
