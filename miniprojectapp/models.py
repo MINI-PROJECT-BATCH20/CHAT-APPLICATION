@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+from django.db import models
+
+# Create your models here.
+=======
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -18,3 +23,4 @@ class Signup(models.Model):
 
 
 
+>>>>>>> a8d1b39ecf4ea0a8bd1f01783c19247e14f1c514
