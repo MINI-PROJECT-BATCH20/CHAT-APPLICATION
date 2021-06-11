@@ -1,23 +1,39 @@
 from django.shortcuts import render
-from miniprojectapp.forms import SignupForm
-from django.http import HttpResponse  
-from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth import logout,  authenticate
-from django.contrib.auth import login as dj_login
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from django.core.paginator import Paginator
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib.auth import login as dj_login
+from miniprojectapp.forms import SignUpForm
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
-# Create your views here.  
-def index(request):  
-    stu = SignupForm()
-    if request.method=="POST":
-        stu = SignupForm(request.POST)  
-        if stu.is_valid():
-            stu.save()
-            messages.success(request,'Account created.. Please login')
+
+# Create your views here.
+def signup(request):
+    form=SignUpForm()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form=SignUpForm()
+            return redirect('/login/')
         else:
-            messages.warning(request,'Something went wrong.')
-    return render(request,"index.html",{'form':stu})  
+            form = SignUpForm()
+    return render(request, 'index.html', {'form': form})
+def login1(request):
+    return render(request,"login.html")
+def login2(request):
+
+    if request.method=="POST":
+        username = request.POST.get('username') 
+        password = request.POST.get('password')
+        user = authenticate(request,username=username, password=password)
+        if user is not None:
+            # A backend authenticated the credentials
+            dj_login(request, user)
+            messages.success(request, "Logged in successfully!")
+            return HttpResponse('Success')
+    #return render(request, 'login.html')
+    #return HttpResponse('Hello')
+
+
